@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-import Tasks from './Tasks'
+import Task from './Task'
 
 
 export default class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {value: '', taskList: [],
-  };
+    this.state = {
+      value: '',
+      taskList: [],
+    };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.addTask = this.addTask.bind(this);
 
   }
   //setState
@@ -20,25 +22,22 @@ export default class App extends Component {
 
   // componentDidMount() {}
   // window.localStorage.getItem
+
+
+  handleChange(e) {
+    this.setState({ value: e.target.value });
+    //console.log(this.state.value)
+  }
+
+  addTask(e) {
+    //if(this.state.value !== ''){
   
-
-
-  //addTask() {}
-
-    handleChange(e) {
-      this.setState({value: e.target.value});
-      console.log(this.state.value)
-    }
-  
-    handleSubmit(e) {
-      this.setState({taskList: [this.state.value]})
-      this.setState({value:''})
-      //console.log("submitted")
-      //alert('A name was submitted: ' + this.state.value);
-      e.preventDefault();
-   }
-
-  
+    this.setState({ taskList: this.state.taskList.concat(this.state.value)});
+    this.setState({ value: '' })
+   
+    e.preventDefault();
+  }
+//}
 
   //deleteTask() {}
 
@@ -56,15 +55,16 @@ export default class App extends Component {
     return (
       <div className="container text-center border">
         <h1>To-Do List</h1>
-        <form onSubmit={this.handleSubmit}>
-        <label>
-          <input type="text" placeholder= "Add Task"value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="Submit" value="Submit" />
-      </form>
-        {/* <input type="text" placeholder="Add Task" /> */}
-        {/* <button className="btn btn-light" onClick={this.addTask}><b>Add</b></button> */}
-          <Tasks task={this.state.taskList[0]}/>
+
+        <form onSubmit={this.addTask}>
+          <label>
+            <input type="text" placeholder="Add Task" value={this.state.value} onChange={this.handleChange} />
+          </label>
+          <input type="Submit" value="Submit" />
+        </form>
+
+        {this.state.taskList.map((item, index) => <Task key={index} task={item} />)}
+
         <div className="row">
           <div className="col">
             <div className="row d-flex justify-content-between">

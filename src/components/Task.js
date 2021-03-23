@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export class Tasks extends Component {
+export class Task extends Component {
     constructor(props) {
         super(props);
     }
@@ -20,4 +20,4 @@ export class Tasks extends Component {
     }
 }
 
-export default Tasks
+export default Task
