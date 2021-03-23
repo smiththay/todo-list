@@ -13,28 +13,24 @@ export default class App extends Component {
 
     this.inputTask = this.inputTask.bind(this);
     this.addTask = this.addTask.bind(this);
-
+    this.deleteTask = this.deleteTask.bind(this);
   }
-  //setState
 
   componentDidUpdate() {
-   window.localStorage.setItem('taskList', JSON.stringify(this.state.taskList))
+    window.localStorage.setItem('taskList', JSON.stringify(this.state.taskList))
+  }
 
-     } 
-  // componentDidMount() {}
-  // window.localStorage.getItem
   componentDidMount() {
 
-     let taskList = window.localStorage.getItem('taskList')
-    //console.log(currentPage)
-     if (taskList) {
-       this.setState({ taskList: JSON.parse(taskList) })
-     }
-     else {
-       window.localStorage.setItem('taskList', [])
-     }
-   }
+    let taskList = window.localStorage.getItem('taskList')
 
+    if (taskList) {
+      this.setState({ taskList: JSON.parse(taskList) })
+    }
+    else {
+      window.localStorage.setItem('taskList', [])
+    }
+  }
 
   inputTask(e) {
     this.setState({ value: e.target.value });
@@ -42,16 +38,31 @@ export default class App extends Component {
   }
 
   addTask(e) {
-    
-    //if(this.state.value !== ''){
-    this.setState({ taskList: this.state.taskList.concat(this.state.value)});
-    this.setState({ value: '' })
+    if (this.state.value !== '') {
+      this.setState({
+        taskList: this.state.taskList.concat({
+          string: this.state.value,
+          id: new Date()
+        })
+      });
+      this.setState({ value: '' })
+    }
     e.preventDefault();
   }
 
-  deleteTask() {
+  deleteTask(taskId) {
+    console.log(taskId)
+    const filteredTasks = this.state.taskList.filter(task => task.id !== taskId);
+    console.log(filteredTasks)
+    this.setState({ taskList: filteredTasks });
+  };
+  //this.setState({taskList: this.state.taskList.filter(function(taskList) { 
+  //  return taskList !== e.target.value 
+  // })});
 
-  }
+
+
+
 
   //checkedTask() {}
 
@@ -72,22 +83,24 @@ export default class App extends Component {
           <label>
             <input type="text" placeholder="Add Task" value={this.state.value} onChange={this.inputTask} />
           </label>
-          <input type="Submit" value="Submit" />
+          <button className="btn btn-regular" type="Submit" value="Submit">
+            Add
+          </button>
         </form>
 
-        {this.state.taskList.map((item, index) => <Task key={index} task={item} />)}
+        {this.state.taskList.map((item, index) => <Task key={index} task={item} onDelete={this.deleteTask} />)}
 
         <div className="row">
           <div className="col">
             <div className="row d-flex justify-content-between">
-              <button onClick='null' className="btn btn-light col-3" type="button"><b>Show All</b></button>
-              <button onClick='null' className="btn btn-light col-3" type="button"><b>Show Active</b></button>
-              <button onClick='null' className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
-              <button onClick='null' className="btn btn-light col-3" type="button"><b>Clear Completed</b></button>
+              <button className="btn btn-light col-3" type="button"><b>Show All</b></button>
+              <button className="btn btn-light col-3" type="button"><b>Show Active</b></button>
+              <button className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
+              <button className="btn btn-light col-3" type="button"><b>Clear Completed</b></button>
             </div>
           </div>
         </div>
-        <p className="text-primary">There are  ## items left</p>
+        <p className="text">There are  ## items left</p>
       </div>
 
     )
