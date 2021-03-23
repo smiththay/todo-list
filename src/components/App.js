@@ -11,35 +11,47 @@ export default class App extends Component {
       taskList: [],
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.inputTask = this.inputTask.bind(this);
     this.addTask = this.addTask.bind(this);
 
   }
   //setState
 
-  // componentDidUpdate() {}
-  // windowlocalStorage.setItem
+  componentDidUpdate() {
+   window.localStorage.setItem('taskList', JSON.stringify(this.state.taskList))
 
+     } 
   // componentDidMount() {}
   // window.localStorage.getItem
+  componentDidMount() {
+
+     let taskList = window.localStorage.getItem('taskList')
+    //console.log(currentPage)
+     if (taskList) {
+       this.setState({ taskList: JSON.parse(taskList) })
+     }
+     else {
+       window.localStorage.setItem('taskList', [])
+     }
+   }
 
 
-  handleChange(e) {
+  inputTask(e) {
     this.setState({ value: e.target.value });
     //console.log(this.state.value)
   }
 
   addTask(e) {
+    
     //if(this.state.value !== ''){
-  
     this.setState({ taskList: this.state.taskList.concat(this.state.value)});
     this.setState({ value: '' })
-   
     e.preventDefault();
   }
-//}
 
-  //deleteTask() {}
+  deleteTask() {
+
+  }
 
   //checkedTask() {}
 
@@ -58,7 +70,7 @@ export default class App extends Component {
 
         <form onSubmit={this.addTask}>
           <label>
-            <input type="text" placeholder="Add Task" value={this.state.value} onChange={this.handleChange} />
+            <input type="text" placeholder="Add Task" value={this.state.value} onChange={this.inputTask} />
           </label>
           <input type="Submit" value="Submit" />
         </form>
