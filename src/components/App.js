@@ -21,6 +21,7 @@ export default class App extends Component {
     //this.showAll = this.showAll.bind(this);
     this.deleteCompleted = this.deleteCompleted.bind(this);
     this.addFilter = this.addFilter.bind(this);
+   // this.remainingTask = this.remainingTask.bind(this);
   }
 
   componentDidUpdate() {
@@ -35,7 +36,7 @@ export default class App extends Component {
       this.setState({ taskList: JSON.parse(taskList) })
     }
     else {
-      window.localStorage.setItem('taskList', [])
+     window.localStorage.setItem('taskList', [])
     }
   }
 
@@ -86,15 +87,16 @@ export default class App extends Component {
  // }
 
   deleteCompleted() {
-     const completedTasks = this.state.taskList.filter(task => !task.completed );
+     const completedTasks = this.state.taskList.filter(task => !task.completed);
      this.setState({ taskList: completedTasks });
    };
+
     
    addFilter(filterNow) {
     this.setState({ filter: filterNow })
    }
-   //remainingTask(){
-  // }
+
+  
 
   render() {
     const mapHelper = (item, index) => <Task key={index} task={item} onDelete={this.deleteTask} onCheck={this.checkedTask} />
@@ -136,7 +138,7 @@ export default class App extends Component {
             </div>
           </div>
         </div>
-        <p className="text">There are  ## items left</p>
+        <p className="text">There are  {this.state.taskList.filter(item => !item.completed).length} items left</p>
       </div>
     )
   }

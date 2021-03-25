@@ -10,9 +10,8 @@ export class Task extends Component {
         return (
             <div>
                 <ul className="list-group">
-                    <div className="list-group-item d-flex justify-content-between">
-                        <div className="col-1 border text-center"></div>
-
+                    <div className="list-group-item d-flex justify-content-between text-center">
+                
                         <h5 className={this.props.task.completed ? "text-decoration-line-through text-muted": null}>{this.props.task.taskValue}</h5>
                         
                         <button onClick={() => this.props.onCheck(this.props.task.id)} className={this.props.task.completed ? "btn btn-light" : "btn btn-secondary"}> {this.props.task.completed ? "to be done" : "completed"}</button>
