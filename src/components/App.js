@@ -16,10 +16,11 @@ export default class App extends Component {
     this.addTask = this.addTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
     this.checkedTask = this.checkedTask.bind(this);
-    this.showActive = this.showActive.bind(this);
-    this.showCompleted= this.showCompleted.bind(this);
-    this.showAll = this.showAll.bind(this);
- // this.deleteCompleted = this.deleteCompleted.bind(this);
+   // this.showActive = this.showActive.bind(this);
+   // this.showCompleted= this.showCompleted.bind(this);
+    //this.showAll = this.showAll.bind(this);
+    this.deleteCompleted = this.deleteCompleted.bind(this);
+    this.addFilter = this.addFilter.bind(this);
   }
 
   componentDidUpdate() {
@@ -75,27 +76,25 @@ export default class App extends Component {
     })
   }
 
-  showCompleted() {
-    this.setState({ filter: 'completed'})
-  }
+  //showCompleted() {
+   // this.setState({ filter: 'completed'})
+ // }
 
-  showAll() {
-    this.setState({ filter: 'all'})
-  }
+ // showActive() {
+  //  this.setState({ filter: 'active'})
 
-  showActive() {
-    this.setState({ filter: 'active'})
+ // }
 
-  }
-  /* deleteCompleted() {
-     let filteredArr = this.state.taskArr.filter(task => {
-     if(this.state.filter === 'completed') {
-       return task;
-     }
-     })
-     this.setState({taskList: filteredArr})
-   }*/
-
+  deleteCompleted() {
+     const completedTasks = this.state.taskList.filter(task => !task.completed );
+     this.setState({ taskList: completedTasks });
+   };
+    
+   addFilter(filterNow) {
+    this.setState({ filter: filterNow })
+   }
+   //remainingTask(){
+  // }
 
   render() {
     const mapHelper = (item, index) => <Task key={index} task={item} onDelete={this.deleteTask} onCheck={this.checkedTask} />
@@ -111,8 +110,6 @@ export default class App extends Component {
         return item
       }
     }
-
-
 
     return (
       <div className="container text-center border" >
@@ -132,10 +129,10 @@ export default class App extends Component {
         <div className="row" >
           <div className="col">
             <div className="row d-flex justify-content-between">
-              <button onClick={this.showAll} className="btn btn-light col-3" type="button"><b>Show All</b></button>
-              <button onClick={this.showActive} className="btn btn-light col-3" type="button"><b>Show Active</b></button>
-              <button onClick={this.showCompleted} className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
-              {/* <button onClick={this.deleteCompleted} className="btn btn-light col-3" type="button"><b>Clear Completed</b></button> */}
+              <button onClick={() => this.addFilter('all')} className="btn btn-light col-3" type="button"><b>Show All</b></button>
+              <button onClick={() => this.addFilter('active')} className="btn btn-light col-3" type="button"><b>Show Active</b></button>
+              <button onClick={() => this.addFilter('completed')} className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
+              <button onClick={this.deleteCompleted} className="btn btn-light col-3" type="button"><b>Clear Completed</b></button> 
             </div>
           </div>
         </div>
