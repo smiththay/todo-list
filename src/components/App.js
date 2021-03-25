@@ -62,11 +62,11 @@ export default class App extends Component {
 
   checkedTask(id) {
     this.setState({
-      taskList: this.state.taskList.map(taskList => {
-        if (taskList.id === id) {
-          taskList.completed = !taskList.completed
+      taskList: this.state.taskList.map(taskItem => {
+        if (taskItem.id === id) {
+          taskItem.completed = !taskItem.completed
         }
-        return taskList
+        return taskItem
 
       })
     })
@@ -82,8 +82,8 @@ export default class App extends Component {
   //clearCompleted() {}
 
   render() {
-      return(
-      <div className = "container text-center border" >
+    return (
+      <div className="container text-center border" >
         <h1>To-Do List</h1>
 
         <form onSubmit={this.addTask}>
@@ -91,26 +91,24 @@ export default class App extends Component {
             <input type="text" placeholder="Add Task" value={this.state.value} onChange={this.inputTask} />
           </label>
           <button className="btn btn-light" type="Submit" value="Submit">
-              Add
+            Add
           </button>
         </form>
 
-        { this.state.taskList.map((item, index) => <Task key={index} task={item} onDelete={this.deleteTask} onCheck={this.checkedTask} />)
-    }
+        {this.state.taskList.map((item, index) => <Task key={index} task={item} onDelete={this.deleteTask} onCheck={this.checkedTask} />)}
 
-    <div className = "row" >
-    <div className="col">
-      <div className="row d-flex justify-content-between">
-        <button className="btn btn-light col-3" type="button"><b>Show All</b></button>
-        <button className="btn btn-light col-3" type="button"><b>Show Active</b></button>
-        <button className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
-        <button className="btn btn-light col-3" type="button"><b>Clear Completed</b></button>
-      </div>
-    </div>
+        <div className="row" >
+          <div className="col">
+            <div className="row d-flex justify-content-between">
+              <button className="btn btn-light col-3" type="button"><b>Show All</b></button>
+              <button className="btn btn-light col-3" type="button"><b>Show Active</b></button>
+              <button className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
+              <button className="btn btn-light col-3" type="button"><b>Clear Completed</b></button>
+            </div>
+          </div>
         </div>
-      <p className="text">There are  ## items left</p>
+        <p className="text">There are  ## items left</p>
       </div>
-
     )
   }
 }
