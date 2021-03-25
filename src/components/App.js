@@ -9,13 +9,17 @@ export default class App extends Component {
     this.state = {
       value: '',
       taskList: [],
-      completed: false,
+      filter: 'all'
     };
 
     this.inputTask = this.inputTask.bind(this);
     this.addTask = this.addTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
     this.checkedTask = this.checkedTask.bind(this);
+    this.showActive = this.showActive.bind(this);
+    this.showCompleted= this.showCompleted.bind(this);
+    this.showAll = this.showAll.bind(this);
+ // this.deleteCompleted = this.deleteCompleted.bind(this);
   }
 
   componentDidUpdate() {
@@ -45,7 +49,7 @@ export default class App extends Component {
         taskList: this.state.taskList.concat({
           taskValue: this.state.value,
           id: new Date(),
-          completed: false
+          completed: false,
         })
       });
       this.setState({ value: '' })
@@ -67,21 +71,49 @@ export default class App extends Component {
           taskItem.completed = !taskItem.completed
         }
         return taskItem
-
       })
     })
   }
 
+  showCompleted() {
+    this.setState({ filter: 'completed'})
+  }
 
-  //showAll() {}
+  showAll() {
+    this.setState({ filter: 'all'})
+  }
 
-  //showActive() {}
+  showActive() {
+    this.setState({ filter: 'active'})
 
-  //showCompleted
+  }
+  /* deleteCompleted() {
+     let filteredArr = this.state.taskArr.filter(task => {
+     if(this.state.filter === 'completed') {
+       return task;
+     }
+     })
+     this.setState({taskList: filteredArr})
+   }*/
 
-  //clearCompleted() {}
 
   render() {
+    const mapHelper = (item, index) => <Task key={index} task={item} onDelete={this.deleteTask} onCheck={this.checkedTask} />
+    const filterHelper = item => {
+      //console.log(item)
+      if (item.completed && this.state.filter === 'completed') {
+        return item
+      }
+      if (this.state.filter === 'all') {
+        return item
+      }
+      if (this.state.filter === 'active' && !item.completed) {
+        return item
+      }
+    }
+
+
+
     return (
       <div className="container text-center border" >
         <h1>To-Do List</h1>
@@ -95,15 +127,15 @@ export default class App extends Component {
           </button>
         </form>
 
-        {this.state.taskList.map((item, index) => <Task key={index} task={item} onDelete={this.deleteTask} onCheck={this.checkedTask} />)}
+        {this.state.taskList.filter(filterHelper).map(mapHelper)}
 
         <div className="row" >
           <div className="col">
             <div className="row d-flex justify-content-between">
-              <button className="btn btn-light col-3" type="button"><b>Show All</b></button>
-              <button className="btn btn-light col-3" type="button"><b>Show Active</b></button>
-              <button className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
-              <button className="btn btn-light col-3" type="button"><b>Clear Completed</b></button>
+              <button onClick={this.showAll} className="btn btn-light col-3" type="button"><b>Show All</b></button>
+              <button onClick={this.showActive} className="btn btn-light col-3" type="button"><b>Show Active</b></button>
+              <button onClick={this.showCompleted} className="btn btn-light col-3" type="button"><b>Show Completed</b></button>
+              {/* <button onClick={this.deleteCompleted} className="btn btn-light col-3" type="button"><b>Clear Completed</b></button> */}
             </div>
           </div>
         </div>
